@@ -1,0 +1,13 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (HelloSDL.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Main.cpp
+c:\users\gfray\documents\visual studio 2017\projects\emuchip8_welcome\hellosdl\main.cpp(74): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\gfray\documents\visual studio 2017\projects\emuchip8_welcome\hellosdl\main.cpp(78): warning C4101: 'tempByte3': unreferenced local variable
+c:\users\gfray\documents\visual studio 2017\projects\emuchip8_welcome\hellosdl\main.cpp(77): warning C4101: 'tempByte2': unreferenced local variable
+c:\users\gfray\documents\visual studio 2017\projects\emuchip8_welcome\hellosdl\main.cpp(76): warning C4101: 'tempByte1': unreferenced local variable
+c:\users\gfray\documents\visual studio 2017\projects\emuchip8_welcome\hellosdl\main.cpp(507): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\users\gfray\documents\visual studio 2017\projects\emuchip8_welcome\hellosdl\main.cpp(544): warning C4554: '&': check operator precedence for possible error; use parentheses to clarify precedence
+c:\users\gfray\documents\visual studio 2017\projects\emuchip8_welcome\hellosdl\main.cpp(555): warning C4305: '=': truncation from 'int' to 'char'
+c:\users\gfray\documents\visual studio 2017\projects\emuchip8_welcome\hellosdl\main.cpp(555): warning C4309: '=': truncation of constant value
+c:\users\gfray\documents\visual studio 2017\projects\emuchip8_welcome\hellosdl\main.cpp(630): warning C4305: '=': truncation from 'int' to 'char'
+c:\users\gfray\documents\visual studio 2017\projects\emuchip8_welcome\hellosdl\main.cpp(630): warning C4309: '=': truncation of constant value
+  HelloSDL.vcxproj -> C:\Users\gfray\Documents\Visual Studio 2017\Projects\EmuChip8_Welcome\x64\Debug\EmuChip8_Welcome.exe
