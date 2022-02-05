@@ -2,6 +2,20 @@
 
 
 
+//special thanks:
+//
+//https://en.wikipedia.org/wiki/CHIP-8#Opcode_table
+//https://www.freecodecamp.org/news/creating-your-very-own-chip-8-emulator/
+//https://multigesture.net/articles/how-to-write-an-emulator-chip-8-interpreter/
+//https://www.zophar.net/pdroms/chip8/chip-8-games-pack.html
+//https://github.com/W-J-Dev-School/CHIP-8-Emulator/blob/master/src/chip8/cpu.rs
+//https://blog.wjdevschool.com/blog/video-game-console-emulator/
+//https://stackoverflow.com/questions/22129349/reading-binary-file-to-unsigned-char-array-and-write-it-to-another?noredirect=1&lq=1
+//https://www.tutorialspoint.com/c_standard_library/c_function_fread.htm
+//
+//
+//
+
 #include "pch.h"
 #include <SDL.h>
 #include <iostream>
@@ -22,6 +36,9 @@ struct SDL_ElementHolder
 
 	SDL_Surface *bgSurface = nullptr;
 	const unsigned char *sdlKeyState = nullptr;
+
+	Mix_Music *bgm = nullptr;
+	Mix_Chunk *sfx = nullptr;
 };
 
 int DeInitSdlForEmu(SDL_ElementHolder *sdlHolder);
@@ -85,7 +102,12 @@ int main(int argc, char *argv[])
 	if (InitSdlForEmu(&sdlHolder) == 0)
 	{
 		LoadEmuOS(mem);
-		LoadGameProgram(mem, "Space Invaders [David Winter].ch8"); //"MERLIN");// "BLINKY"); // Space Invaders [David Winter].ch8 // Maze (alt) [David Winter, 199x].ch8
+		LoadGameProgram(mem, "BLINKY"); //"MERLIN");// "BLINKY"); // Space Invaders [David Winter].ch8 // Maze (alt) [David Winter, 199x].ch8
+
+		//set chip8 sound
+		//using for simple demo purposes https://freesound.org/people/braqoon/sounds/161098/
+		//thank you braqoon, esp for the CC0 license
+		sdlHolder.sfx = Mix_LoadWAV("161098__braqoon__arrow-damage_CC.wav");
 
 		bool isRunning = true;
 		SDL_Event ev;
@@ -407,6 +429,17 @@ int main(int argc, char *argv[])
 			if (soundTimer > 0)
 			{
 				soundTimer -= 1;
+				if (!Mix_Playing(0))
+				{
+					Mix_PlayChannel(0, sdlHolder.sfx, 0);
+				}
+				//Mix_HaltChannel(0);
+			}
+			else {
+				if (Mix_Playing(0))
+				{
+					////Mix_HaltChannel(0);
+				}
 			}
 
 			//
@@ -720,6 +753,11 @@ int DeInitSdlForEmu(SDL_ElementHolder *sdlHolder)
 	SDL_DestroyWindow((*sdlHolder).window);
 	(*sdlHolder).window = nullptr;
 	(*sdlHolder).windowSurface = nullptr;
+	Mix_FreeChunk((*sdlHolder).sfx);
+	Mix_FreeMusic((*sdlHolder).bgm);
+	(*sdlHolder).sfx = nullptr;
+	(*sdlHolder).bgm = nullptr;
+	Mix_Quit();
 	SDL_Quit();
 
 	return 0;
@@ -728,9 +766,9 @@ int DeInitSdlForEmu(SDL_ElementHolder *sdlHolder)
 int InitSdlForEmu(SDL_ElementHolder *sdlHolder)
 {
 	int errorReturned = 1;
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
 	{
-		std::cout << "error with video init" << SDL_GetError() << std::endl;
+		std::cout << "error with video or audio init" << SDL_GetError() << std::endl;
 	}
 	else
 	{
@@ -741,6 +779,11 @@ int InitSdlForEmu(SDL_ElementHolder *sdlHolder)
 		}
 		else
 		{
+			if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+			{
+				std::cout << "SDL Mixer error: " << Mix_GetError() << std::endl;
+			}
+
 			(*sdlHolder).windowSurface = SDL_GetWindowSurface((*sdlHolder).window);
 			errorReturned = 0;			
 		}
